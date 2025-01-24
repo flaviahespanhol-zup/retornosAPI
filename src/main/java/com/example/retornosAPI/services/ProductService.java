@@ -27,7 +27,8 @@ public class ProductService {
     public ProductDTO getProductById(Long id) {
         ProductEntity entity = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
-        return new ProductDTO(entity.getId(), entity.getName(), entity.getPrice());
+        return new ProductDTO(entity.getId(), entity.getName(), entity.getPrice(),
+                entity.getStock(), entity.getCategory());
     }
 
     public List<ProductDTO> getAllProducts() {
