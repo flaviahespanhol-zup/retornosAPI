@@ -32,9 +32,9 @@ public class ProductService {
     }
 
     public List<ProductDTO> getAllProducts() {
-        return repository.findAll().stream()
-                .map(entity -> new ProductDTO(entity.getId(), entity.getName(), entity.getPrice()))
-                .collect(Collectors.toList());
+        List<ProductEntity> allProducts = repository.findAll();
+        return allProducts.stream()
+                .map(ProductDTO::entityToDTO).toList();
     }
 
     public void deleteProduct(Long id) {

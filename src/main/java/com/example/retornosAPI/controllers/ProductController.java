@@ -33,7 +33,8 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        return ResponseEntity.ok(service.getAllProducts());
+        List<ProductDTO> allProducts = service.getAllProducts();
+        return ResponseEntity.status(HttpStatus.OK).body(allProducts);
     }
 
     @DeleteMapping("/{id}")
