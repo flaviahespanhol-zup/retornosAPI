@@ -8,6 +8,8 @@ public record PostProductDTO(
         @NotNull(message = "O nome não pode ser nulo")
         @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres")
         String name,
+        @Size(max = 500, message = "A descrição deve ter no máximo 500 caracteres")
+        String description,
         @NotBlank(message = "O preço não pode ser vazio")
         @NotNull(message = "O preço não pode ser nulo")
         @DecimalMin(value = "0.01", inclusive = true, message = "O preço deve ser maior que zero")
@@ -24,6 +26,7 @@ public record PostProductDTO(
     public ProductEntity dtoToEntity() {
         ProductEntity newProduct = new ProductEntity();
         newProduct.setName(name);
+        newProduct.setDescription(description);
         newProduct.setPrice(price);
         newProduct.setStock(stock);
         newProduct.setCategory(category);
