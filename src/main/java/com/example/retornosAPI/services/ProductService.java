@@ -1,12 +1,11 @@
 package com.example.retornosAPI.services;
 
-import com.example.retornosAPI.models.Product;
+import com.example.retornosAPI.dtos.ProductDTO;
 import com.example.retornosAPI.models.ProductEntity;
 import com.example.retornosAPI.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,21 +17,21 @@ public class ProductService {
         this.repository = repository;
     }
 
-    public Product createProduct(Product product) {
+    public ProductDTO createProduct(ProductDTO product) {
         ProductEntity entity = new ProductEntity(null, product.name(), product.price());
         ProductEntity savedEntity = repository.save(entity);
-        return new Product(savedEntity.getId(), savedEntity.getName(), savedEntity.getPrice());
+        return new ProductDTO(savedEntity.getId(), savedEntity.getName(), savedEntity.getPrice());
     }
 
-    public Product getProductById(Long id) {
+    public ProductDTO getProductById(Long id) {
         ProductEntity entity = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
-        return new Product(entity.getId(), entity.getName(), entity.getPrice());
+        return new ProductDTO(entity.getId(), entity.getName(), entity.getPrice());
     }
 
-    public List<Product> getAllProducts() {
+    public List<ProductDTO> getAllProducts() {
         return repository.findAll().stream()
-                .map(entity -> new Product(entity.getId(), entity.getName(), entity.getPrice()))
+                .map(entity -> new ProductDTO(entity.getId(), entity.getName(), entity.getPrice()))
                 .collect(Collectors.toList());
     }
 
@@ -41,7 +40,7 @@ public class ProductService {
     }
 
     // Atualizar um produto existente
-    public Product updateProduct(Long id, Product updatedProduct) {
+    public ProductDTO updateProduct(Long id, ProductDTO updatedProduct) {
         // Verificar se o produto existe
         ProductEntity existingEntity = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product with ID " + id + " not found"));
@@ -54,11 +53,11 @@ public class ProductService {
         ProductEntity savedEntity = repository.save(existingEntity);
 
         // Retornar o produto atualizado
-        return new Product(savedEntity.getId(), savedEntity.getName(), savedEntity.getPrice());
+        return new ProductDTO(savedEntity.getId(), savedEntity.getName(), savedEntity.getPrice());
     }
 
     // Buscar produtos pelo nome
-    public List<Product> getProductsByName(String name) {
+    public List<ProductDTO> getProductsByName(String name) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("O nome do produto não pode ser vazio.");
         }
@@ -70,7 +69,7 @@ public class ProductService {
             System.out.println("Produtos encontrados com o nome '" + name + "': " + entities.size());
         }
         return entities.stream()
-                .map(entity -> new Product(entity.getId(), entity.getName(), entity.getPrice()))
+                .map(entity -> new ProductDTO(entity.getId(), entity.getName(), entity.getPrice()))
                 .collect(Collectors.toList());
     }
 }
