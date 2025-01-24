@@ -4,9 +4,9 @@ import com.example.retornosAPI.models.ProductEntity;
 
 public record ProductDTO(Long id, String name, Double price, int stock, String category) {
 
-    public static ProductDTO entityToDTO (ProductEntity produto) {
+    public static ProductDTO entityToDTO (ProductEntity product) {
         return new ProductDTO(
-                produto.getId(), produto.getName(), produto.getPrice(),
-                produto.getStock(), produto.getCategory());
+                product.getId(), product.getName(), product.getPrice(),
+                product.getStock(), product.getCategory());
     }
 }

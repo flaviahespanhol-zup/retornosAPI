@@ -1,7 +1,9 @@
 package com.example.retornosAPI.controllers;
 
+import com.example.retornosAPI.dtos.PostProductDTO;
 import com.example.retornosAPI.dtos.ProductDTO;
 import com.example.retornosAPI.services.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +20,9 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO product) {
-        return ResponseEntity.ok(service.createProduct(product));
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody PostProductDTO product) {
+        ProductDTO newProduct = service.createProduct(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }
 
     @GetMapping("/{id}")

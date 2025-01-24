@@ -1,5 +1,6 @@
 package com.example.retornosAPI.services;
 
+import com.example.retornosAPI.dtos.PostProductDTO;
 import com.example.retornosAPI.dtos.ProductDTO;
 import com.example.retornosAPI.models.ProductEntity;
 import com.example.retornosAPI.repositories.ProductRepository;
@@ -17,10 +18,10 @@ public class ProductService {
         this.repository = repository;
     }
 
-    public ProductDTO createProduct(ProductDTO product) {
-        ProductEntity entity = new ProductEntity(null, product.name(), product.price());
-        ProductEntity savedEntity = repository.save(entity);
-        return new ProductDTO(savedEntity.getId(), savedEntity.getName(), savedEntity.getPrice());
+    public ProductDTO createProduct(PostProductDTO product) {
+        ProductEntity newProductEntity = product.dtoToEntity();
+        ProductEntity savedEntity = repository.save(newProductEntity);
+        return ProductDTO.entityToDTO(savedEntity);
     }
 
     public ProductDTO getProductById(Long id) {
