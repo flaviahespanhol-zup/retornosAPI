@@ -4,6 +4,7 @@ import com.example.retornosAPI.dtos.PostProductDTO;
 import com.example.retornosAPI.dtos.ProductDTO;
 import com.example.retornosAPI.exeptions.ProductNotFoundException;
 import com.example.retornosAPI.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody PostProductDTO product) {
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody PostProductDTO product) {
         ProductDTO newProduct = service.createProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }

@@ -10,11 +10,9 @@ public record PostProductDTO(
         String name,
         @Size(max = 500, message = "A descrição deve ter no máximo 500 caracteres")
         String description,
-        @NotBlank(message = "O preço não pode ser vazio")
         @NotNull(message = "O preço não pode ser nulo")
         @DecimalMin(value = "0.01", inclusive = true, message = "O preço deve ser maior que zero")
         Double price,
-        @NotBlank(message = "O estoque não pode ser vazio")
         @NotNull(message = "O estoque não pode ser nulo")
         @Min(value = 0, message = "O estoque deve ser um número inteiro maior ou igual a zero")
         int stock,
