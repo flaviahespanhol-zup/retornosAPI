@@ -65,19 +65,11 @@ public class ProductService {
     }
 
     // Buscar produtos pelo nome
-//    public List<ProductDTO> getProductsByName(String name) {
-//        if (name == null || name.isEmpty()) {
-//            throw new IllegalArgumentException("O nome do produto não pode ser vazio.");
-//        }
-//
-//        List<ProductEntity> entities = repository.findByNameContainingIgnoreCase(name);
-//        if (entities.isEmpty()) {
-//            System.out.println("Nenhum produto encontrado com o nome: " + name);
-//        } else {
-//            System.out.println("Produtos encontrados com o nome '" + name + "': " + entities.size());
-//        }
-//        return entities.stream()
-//                .map(entity -> new ProductDTO(entity.getId(), entity.getName(), entity.getPrice()))
-//                .collect(Collectors.toList());
-//    }
+    public List<ProductDTO> getProductsByName(String name) throws ProductNotFoundException {
+       List<ProductEntity> productsByName = repository.findByNameContainingIgnoreCase(name);
+       if (productsByName.isEmpty()) {
+           throw new ProductNotFoundException();
+       }
+       return productsByName.stream().map(ProductDTO::entityToDTO).toList();
+    }
 }

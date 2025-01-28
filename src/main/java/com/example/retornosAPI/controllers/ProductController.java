@@ -32,6 +32,13 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(product);
     }
 
+    @GetMapping("/{name}")
+    public ResponseEntity<List<ProductDTO>> getProductsByName(@PathVariable String name)
+    throws ProductNotFoundException {
+        List<ProductDTO> productsByName = service.getProductsByName(name);
+        return ResponseEntity.status(HttpStatus.OK).body(productsByName);
+    }
+
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
         List<ProductDTO> allProducts = service.getAllProducts();
