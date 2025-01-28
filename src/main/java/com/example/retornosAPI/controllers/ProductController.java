@@ -2,6 +2,7 @@ package com.example.retornosAPI.controllers;
 
 import com.example.retornosAPI.dtos.PostProductDTO;
 import com.example.retornosAPI.dtos.ProductDTO;
+import com.example.retornosAPI.exeptions.ProductNotFoundException;
 import com.example.retornosAPI.services.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) throws ProductNotFoundException {
         ProductDTO product = service.getProductById(id);
         return ResponseEntity.status(HttpStatus.OK).body(product);
     }
@@ -39,13 +40,14 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id,
-                                                    @RequestBody PostProductDTO product) {
+                                                    @RequestBody PostProductDTO product)
+            throws ProductNotFoundException {
         ProductDTO productUpdated = service.updateProduct(id, product);
         return ResponseEntity.status(HttpStatus.OK).body(productUpdated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) throws ProductNotFoundException {
         service.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }

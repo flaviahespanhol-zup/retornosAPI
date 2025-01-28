@@ -2,6 +2,7 @@ package com.example.retornosAPI.services;
 
 import com.example.retornosAPI.dtos.PostProductDTO;
 import com.example.retornosAPI.dtos.ProductDTO;
+import com.example.retornosAPI.exeptions.ProductNotFoundException;
 import com.example.retornosAPI.models.ProductEntity;
 import com.example.retornosAPI.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -23,9 +24,9 @@ public class ProductService {
         return ProductDTO.entityToDTO(savedEntity);
     }
 
-    public ProductDTO getProductById(Long id) {
+    public ProductDTO getProductById(Long id) throws ProductNotFoundException {
         ProductEntity entity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(ProductNotFoundException::new);
         return new ProductDTO(entity.getId(), entity.getName(), entity.getDescription(),
                 entity.getPrice(), entity.getStock(), entity.getCategory());
     }
@@ -36,15 +37,17 @@ public class ProductService {
                 .map(ProductDTO::entityToDTO).toList();
     }
 
-    public void deleteProduct(Long id) {
-        repository.deleteById(id);
+    public void deleteProduct(Long id) throws ProductNotFoundException {
+        ProductEntity product = repository.findById(id)
+                .orElseThrow(ProductNotFoundException::new);
+        repository.deleteById(product.getId());
     }
 
     // Atualizar um produto existente
-    public ProductDTO updateProduct(Long id, PostProductDTO updatedProduct) {
+    public ProductDTO updateProduct(Long id, PostProductDTO updatedProduct) throws ProductNotFoundException {
         // Verificar se o produto existe
         ProductEntity existingEntity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product with ID " + id + " not found"));
+                .orElseThrow(ProductNotFoundException::new);
 
         // Atualizar os dados do produto
         existingEntity.setName(updatedProduct.name());
